@@ -64,7 +64,7 @@ uvicorn main:app --reload
 uvicorn app.main:app --reload
 ```
 
-預設為 **http://127.0.0.1:8000**。  
+預設為 http://127.0.0.1:8000。  
 開發時使用 `--reload` 會自動重載程式碼變更。
 
 ## API 說明
@@ -75,9 +75,9 @@ uvicorn app.main:app --reload
 
 **查詢參數**
 
-| 參數 | 類型   | 必填 | 說明         |
-|------|--------|------|--------------|
-| term | string | 是   | 搜尋關鍵字   |
+| 參數 | 類型   | 必填 | 說明       |
+| ---- | ------ | ---- | ---------- |
+| term | string | 是   | 搜尋關鍵字 |
 
 **範例請求**
 
@@ -116,8 +116,8 @@ GET /api/v1/search?term=周杰倫
 
 啟動服務後可至以下網址查看與測試 API：
 
-- **Swagger UI:** http://127.0.0.1:8000/docs  
-- **ReDoc:** http://127.0.0.1:8000/redoc  
+- **Swagger UI:** http://127.0.0.1:8000/docs
+- **ReDoc:** http://127.0.0.1:8000/redoc
 
 ## 環境變數
 
