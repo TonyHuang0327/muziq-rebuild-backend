@@ -15,17 +15,22 @@
 ```
 backend/
 ├── app/
-│   ├── main.py          # FastAPI 應用與搜尋 API
+│   ├── main.py              # FastAPI 應用進入點，掛載路由
+│   ├── api/
+│   │   └── search.py        # 搜尋相關 API 路由
+│   ├── services/
+│   │   └── music_service.py # 串接 iTunes API 的服務層
 │   └── model/
-│       └── song.py      # 歌曲資料模型 (Pydantic)
-├── requirements.txt     # Python 依賴
+│       └── song.py          # 歌曲資料模型 (Pydantic)
+├── requirements.txt         # Python 依賴
+├── .env.local               # 本機環境變數設定（不版控，可選）
 ├── .gitignore
 └── README.md
 ```
 
 ## 環境需求
 
-- Python 3.8+
+- Python 3.10+
 - 可連線至 iTunes API（`https://itunes.apple.com`）
 
 ## 安裝與執行
@@ -58,13 +63,7 @@ cd app
 uvicorn main:app --reload
 ```
 
-或從專案根目錄指定模組路徑：
-
-```bash
-uvicorn app.main:app --reload
-```
-
-預設為 **http://127.0.0.1:8000**。  
+預設為 http://127.0.0.1:8000。  
 開發時使用 `--reload` 會自動重載程式碼變更。
 
 ## API 說明
@@ -75,9 +74,9 @@ uvicorn app.main:app --reload
 
 **查詢參數**
 
-| 參數 | 類型   | 必填 | 說明         |
-|------|--------|------|--------------|
-| term | string | 是   | 搜尋關鍵字   |
+| 參數 | 類型   | 必填 | 說明       |
+| ---- | ------ | ---- | ---------- |
+| term | string | 是   | 搜尋關鍵字 |
 
 **範例請求**
 
@@ -109,15 +108,15 @@ GET /api/v1/search?term=周杰倫
 
 **說明**
 
-- 目前每次搜尋最多回傳 **5 筆** 結果（`limit=5`），地區為 **TW**。
+- 目前每次搜尋最多回傳 **10 筆** 結果（`limit=10`），地區為 **TW**。
 - `previewUrl` 為 30 秒試聽檔連結，可直接用於前端播放。
 
 ## 互動式文件
 
 啟動服務後可至以下網址查看與測試 API：
 
-- **Swagger UI:** http://127.0.0.1:8000/docs  
-- **ReDoc:** http://127.0.0.1:8000/redoc  
+- **Swagger UI:** http://127.0.0.1:8000/docs
+- **ReDoc:** http://127.0.0.1:8000/redoc
 
 ## 環境變數
 
