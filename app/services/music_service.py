@@ -36,8 +36,8 @@ async def search_music(term: str) -> dict:
 
         except httpx.RequestError as exc:
             # 網路層級錯誤 (DNS, Connection timeout 等) -> 502
-             logging.exception("Network error occurred while requesting %r", exc.request.url)
-             raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Upstream service unreachable") from exc
+            logging.exception("Network error occurred while requesting %r", exc.request.url)
+            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Upstream service unreachable") from exc
         except httpx.HTTPStatusError as exc:
             # iTunes 回傳了 4xx 或 5xx -> 502
             logging.exception("Error response %d while requesting %r", exc.response.status_code, exc.request.url)
@@ -45,7 +45,7 @@ async def search_music(term: str) -> dict:
             
         except (ValueError, KeyError) as exc:
             # JSON 解析失敗或格式不對 -> 502
-            logging.exception("Data format error: %r", exc)
+            logging.exception("Data format error")
             raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Invalid data format from upstream") from exc
 
         results = data.get("results", [])
