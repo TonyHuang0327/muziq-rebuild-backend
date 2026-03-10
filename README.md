@@ -25,7 +25,7 @@ backend/
 
 ## 環境需求
 
-- Python 3.8+
+- Python 3.10+
 - 可連線至 iTunes API（`https://itunes.apple.com`）
 
 ## 安裝與執行
@@ -56,12 +56,6 @@ pip install -r requirements.txt
 ```bash
 cd app
 uvicorn main:app --reload
-```
-
-或從專案根目錄指定模組路徑：
-
-```bash
-uvicorn app.main:app --reload
 ```
 
 預設為 http://127.0.0.1:8000。  
@@ -109,7 +103,7 @@ GET /api/v1/search?term=周杰倫
 
 **說明**
 
-- 目前每次搜尋最多回傳 **5 筆** 結果（`limit=5`），地區為 **TW**。
+- 目前每次搜尋最多回傳 **10 筆** 結果（`limit=10`），地區為 **TW**。
 - `previewUrl` 為 30 秒試聽檔連結，可直接用於前端播放。
 
 ## 互動式文件
