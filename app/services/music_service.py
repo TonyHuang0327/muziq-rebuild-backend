@@ -17,7 +17,7 @@ async def search_music(term: str) -> dict:
     if not term or not term.strip():
         raise HTTPException(status_code=400, detail="Search term is required")
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=10.0) as client:
         try:
             params = {
                 "term": term,
@@ -36,18 +36,17 @@ async def search_music(term: str) -> dict:
 
         except httpx.RequestError as exc:
             # 網路層級錯誤 (DNS, Connection timeout 等) -> 502
-            logging.error(f"Network error occurred while requesting {exc.request.url!r}: {exc}")
-            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Upstream service unreachable")
-            
+             logging.exception("Network error occurred while requesting %r", exc.request.url)
+             raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Upstream service unreachable") from exc
         except httpx.HTTPStatusError as exc:
             # iTunes 回傳了 4xx 或 5xx -> 502
-            logging.error(f"Error response {exc.response.status_code} while requesting {exc.request.url!r}")
-            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Upstream service returned an error")
+            logging.exception("Error response %d while requesting %r", exc.response.status_code, exc.request.url)
+            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Upstream service returned an error") from exc
             
         except (ValueError, KeyError) as exc:
             # JSON 解析失敗或格式不對 -> 502
-            logging.error(f"Data format error: {exc}")
-            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Invalid data format from upstream")
+            logging.exception("Data format error: %r", exc)
+            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Invalid data format from upstream") from exc
 
         results = data.get("results", [])
 

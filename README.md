@@ -15,10 +15,15 @@
 ```
 backend/
 ├── app/
-│   ├── main.py          # FastAPI 應用與搜尋 API
+│   ├── main.py              # FastAPI 應用進入點，掛載路由
+│   ├── api/
+│   │   └── search.py        # 搜尋相關 API 路由
+│   ├── services/
+│   │   └── music_service.py # 串接 iTunes API 的服務層
 │   └── model/
-│       └── song.py      # 歌曲資料模型 (Pydantic)
-├── requirements.txt     # Python 依賴
+│       └── song.py          # 歌曲資料模型 (Pydantic)
+├── requirements.txt         # Python 依賴
+├── .env.local               # 本機環境變數設定（不版控，可選）
 ├── .gitignore
 └── README.md
 ```
